@@ -14,12 +14,32 @@ class UserProfile extends Component {
       successMessage: null,
     };
   }
+
+  //match is provided by react-router
   componentDidMount() {
     const { match } = this.props;
 
     if (match.params.userId) {
       // dispatch an action
       this.props.dispatch(fetchUserProfile(match.params.userId));
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      match: { params: prevParams },
+    } = prevProps;
+
+    const {
+      match: { params: currentParams },
+    } = this.props;
+
+    if (
+      prevParams &&
+      currentParams &&
+      prevParams.userId !== currentParams.userId
+    ) {
+      this.props.dispatch(fetchUserProfile(currentParams.userId));
     }
   }
 
